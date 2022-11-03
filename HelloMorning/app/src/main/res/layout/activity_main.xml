@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8EFCD"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:text="Hello Minjoo!"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                android:textColor="#EED056"
+                android:shadowColor="#C39F0E"
+                android:shadowDx="0.0"
+                android:shadowDy="0.0"
+                android:shadowRadius="2.0"
+                android:textSize="25dp"
+                android:id="@+id/helloUser" />
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/checklist">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Did you take?"
+                    android:background="#F9D35D"
+                    android:id="@+id/didYouTake"
+                    android:fontSize="20dp"/>
+
+                <RadioButton android:id="@+id/radio_Mask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mask"/>
+                <RadioButton android:id="@+id/radio_Umbrella"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Umbrella"/>
+                <RadioButton android:id="@+id/radio_Custom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New-to-do"
+                    android:textColor="#A49F89"/>
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Best transport option"
+                    android:background="#F9D35D"
+                    android:id="@+id/bestTransportOption"
+                    android:fontSize="20dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Subway"
+                    android:id="@+id/suggestTransport"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_StartStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start / Stop"/>
+
+            <Button
+                android:id="@+id/button_PauseResume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pause / Resume"/>
+
+            <Button
+                android:id="@+id/button_Discard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Discard"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

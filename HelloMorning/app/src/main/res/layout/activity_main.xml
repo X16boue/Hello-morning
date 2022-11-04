@@ -27,10 +27,10 @@
                 android:shadowDx="0.0"
                 android:shadowDy="0.0"
                 android:shadowRadius="2.0"
-                android:textSize="25dp"
+                android:textSize="25sp"
                 android:id="@+id/helloUser" />
 
-            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -41,17 +41,17 @@
                     android:text="Did you take?"
                     android:background="#F9D35D"
                     android:id="@+id/didYouTake"
-                    android:fontSize="20dp"/>
+                    android:fontSize="20sp"/>
 
-                <RadioButton android:id="@+id/radio_Mask"
+                <CheckBox android:id="@+id/check_Mask"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mask"/>
-                <RadioButton android:id="@+id/radio_Umbrella"
+                <CheckBox android:id="@+id/check_Umbrella"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Umbrella"/>
-                <RadioButton android:id="@+id/radio_Custom"
+                <CheckBox android:id="@+id/check_Custom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="New-to-do"
@@ -61,42 +61,38 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Best transport option"
-                    android:background="#F9D35D"
                     android:id="@+id/bestTransportOption"
-                    android:fontSize="20dp"/>
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Subway"
-                    android:id="@+id/suggestTransport"/>
+                    android:background="#F9D35D"
+                    android:fontSize="20sp"
+                    android:text="Best transport option" />
+
+                <TextView
+                    android:id="@+id/suggestTransport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Subway" />
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/button_StartStop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start / Stop"/>
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your weekly goal:"
+                    android:background="#F9D35D"
+                    android:id="@+id/weeklyGoal"
+                    android:fontSize="20sp"/>
 
-            <Button
-                android:id="@+id/button_PauseResume"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pause / Resume"/>
-
-            <Button
-                android:id="@+id/button_Discard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Discard"/>
-
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

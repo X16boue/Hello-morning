@@ -91,7 +91,79 @@
                     android:background="#F9D35D"
                     android:id="@+id/weeklyGoal"
                     android:fontSize="20sp"/>
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchColumns="1">
+                    <TableRow>
+                        <TextView
+                            android:text="Mon"
+                            android:layout_width="0dip"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:text="Tue"
+                            android:layout_width="0dip"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:text="Wed"
+                            android:layout_width="0dip"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:text="Thu"
+                            android:layout_width="0dip"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:text="Fri"
+                            android:layout_width="0dip"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:text="Sat"
+                            android:layout_width="0dip"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:text="Sun"
+                            android:layout_width="0dip"
+                            android:layout_weight="1"/>
+                    </TableRow>
 
+                    <TableRow>
+                        <CheckBox android:id="@+id/checkbox_Mon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="onCheckboxClicked"/>
+                        <CheckBox android:id="@+id/checkbox_Tue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="onCheckboxClicked"/>
+                        <CheckBox android:id="@+id/checkbox_Wed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="onCheckboxClicked"/>
+                        <CheckBox android:id="@+id/checkbox_Thu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="onCheckboxClicked"/>
+                        <CheckBox android:id="@+id/checkbox_Fri"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="onCheckboxClicked"/>
+                        <CheckBox android:id="@+id/checkbox_Sat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="onCheckboxClicked"/>
+                        <CheckBox android:id="@+id/checkbox_Sun"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="onCheckboxClicked"/>
+                    </TableRow>
+                </TableLayout>
             </LinearLayout>
         </LinearLayout>
 

@@ -48,7 +48,6 @@ public class FormActivity extends AppCompatActivity {
 
                 if (!(checked.isEmpty())){
                     saveListToFile(checked);
-                    Toast.makeText(getApplicationContext(),"Answers saved", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -73,6 +72,7 @@ public class FormActivity extends AppCompatActivity {
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(checked);
             oos.close();
+            Toast.makeText(getApplicationContext(),"Answers saved", Toast.LENGTH_SHORT).show();
         } catch (Exception e){
             e.printStackTrace();
         }

@@ -67,8 +67,9 @@ public class FormActivity extends AppCompatActivity {
     }
 
     protected void saveListToFile(List<String> checked)  {
-        try{
-            FileOutputStream fos = new FileOutputStream("userdata");
+        Context context = getApplicationContext();
+        String filename = "userdata";
+        try (FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE)){
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(checked);
             oos.close();

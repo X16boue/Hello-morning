@@ -41,7 +41,7 @@
                     android:text="Did you take?"
                     android:background="#F9D35D"
                     android:id="@+id/didYouTake"
-                    android:fontSize="20sp"/>
+                    />
 
                 <CheckBox android:id="@+id/check_Mask"
                     android:layout_width="wrap_content"
@@ -69,7 +69,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#F9D35D"
-                    android:fontSize="20sp"
                     android:text="Best transport option" />
 
                 <TextView
@@ -84,16 +83,20 @@
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:orientation="vertical">
+
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Your weekly goal:"
                     android:background="#F9D35D"
                     android:id="@+id/weeklyGoal"
-                    android:fontSize="20sp"/>
+
+                    />
                 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:stretchColumns="1">
                     <TableRow>
                         <TextView
@@ -164,8 +167,17 @@
                             android:onClick="onCheckboxClicked"/>
                     </TableRow>
                 </TableLayout>
+
+
+            <Button
+                android:id="@+id/jumpToForm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Go to Form" />
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

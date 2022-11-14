@@ -44,7 +44,58 @@ public class GetMethod {
         return data;
     }
 
-    public static String getAsString(String response) {
+    public static double getTemperature(String json){
+        double temp = 0.0;
+        try {
+            JSONObject jsonResponse = new JSONObject(json);
+            JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
+            temp = jsonObjectMain.getDouble("temp") - 273.15;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return temp;
+    }
+
+    public static double getWindSpeed(String json){
+        double wind = 0.0;
+        try {
+            JSONObject jsonResponse = new JSONObject(json);
+            JSONObject jsonObjectWind = jsonResponse.getJSONObject("wind");
+            wind = jsonObjectWind.getDouble("speed");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return wind;
+    }
+
+    public static int getHumidity(String json){
+        int humid = 0;
+        try {
+            JSONObject jsonResponse = new JSONObject(json);
+            JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
+            humid = jsonObjectMain.getInt("humidity");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return humid;
+    }
+
+    public static String getDescription(String json){
+        String description = "";
+        try {
+            JSONObject jsonResponse = new JSONObject(json);
+            JSONArray jsonArray = jsonResponse.getJSONArray("weather");
+            JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
+            description = jsonObjectWeather.getString("main");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return description;
+    }
+
+
+
+    public static String getSumUp(String response) {
         DecimalFormat df = new DecimalFormat("#.##");
 
         String output = "";

@@ -31,11 +31,7 @@ public class MainActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.APItest)).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Log.e("","method call");
                 String result =  GetMethod.getData("Pohang");
-                String sumup = GetMethod.getAsString(result);
-                Log.w("", sumup);
-                Log.e("","method called");
             }
         });
     }

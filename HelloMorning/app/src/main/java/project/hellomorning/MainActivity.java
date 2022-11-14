@@ -6,9 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,19 +17,14 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
 
-        ((Button)findViewById(R.id.jumpToForm)).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, FormActivity.class);
-                startActivity(intent);
-            }
+        (findViewById(R.id.jumpToForm)).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, FormActivity.class);
+            startActivity(intent);
         });
 
-        ((Button)findViewById(R.id.APItest)).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                String result =  GetMethod.getData("Pohang");
-            }
+        (findViewById(R.id.APItest)).setOnClickListener(v -> {
+            String result =  GetMethod.getData("Pohang");
+            Log.w("API results", result);
         });
     }
 }

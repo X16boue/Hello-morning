@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
@@ -29,6 +30,10 @@ public class FormActivity extends AppCompatActivity {
         CheckBox checkScooter = findViewById(R.id.scooter);
         CheckBox checkCar = findViewById(R.id.car);
         Button submitButton = findViewById(R.id.submitForm);
+
+        EditText nameInput = findViewById(R.id.name_input);
+        EditText workCityInput = findViewById(R.id.work_city_input);
+
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override

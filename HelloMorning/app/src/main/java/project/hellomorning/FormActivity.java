@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,6 +26,7 @@ public class FormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_form);
         List<String> checked = new ArrayList<>();
 
+
         CheckBox checkUmbrella = findViewById(R.id.umbrella);
         CheckBox checkBike = findViewById(R.id.bike);
         CheckBox checkScooter = findViewById(R.id.scooter);
@@ -36,8 +38,21 @@ public class FormActivity extends AppCompatActivity {
 
 
         submitButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                String userName = "";
+                String workCityName= "";
+
+                if(nameInput.length() > 0 || !(nameInput.equals(""))){
+                    userName = String.valueOf(nameInput.getText());
+                }
+                if(workCityInput.length() > 0 || !(workCityInput.equals(""))){
+                    workCityName = String.valueOf(workCityInput.getText());
+                }
+                checked.add(0, userName);
+                checked.add(1, workCityName);
+
                 if(checkUmbrella.isChecked()){
                     checked.add((String) checkUmbrella.getText());
                 }

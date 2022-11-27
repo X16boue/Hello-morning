@@ -1,20 +1,16 @@
 package project.hellomorning;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.File;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
         String filename = "userdata";
 
         List<String> materials = fetchMaterialFromFile(filename);
-        Log.w("", String.valueOf(materials.size()));
+        String userName = materials.get(0);
+        String workCityName = materials.get(1);
 
 
         ((Button)findViewById(R.id.jumpToForm)).setOnClickListener(new View.OnClickListener(){

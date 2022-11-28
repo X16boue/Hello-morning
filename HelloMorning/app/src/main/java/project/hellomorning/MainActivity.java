@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         (findViewById(R.id.APItest)).setOnClickListener(v -> {
-            String result =  GetMethod.getData("Pohang");
+            String result =  GetMethod.getCurrentWeather("Pohang");
             Log.w("API results", result);
         });
     }

@@ -14,7 +14,7 @@ import java.net.URL;
 public class GetMethod {
 
 
-    public static String getData(String city) {
+    public static String getCurrentWeather(String city) {
         BufferedReader in;
         String data = null;
         HttpURLConnection urlConnection = null;
@@ -41,6 +41,38 @@ public class GetMethod {
         }
         return data;
     }
+
+    public static String getForecastWeather(String latitude, String longitude) {
+        BufferedReader in;
+        String data = null;
+        HttpURLConnection urlConnection = null;
+
+        try {
+            String stringUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=35eabfbc88074474775d676e2f0fc2ef";
+            URL url = new URL(stringUrl);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String l;
+            String nl = System.getProperty("line.separator");
+            while ((l = in.readLine()) != null) {
+                sb.append(l).append(nl);
+            }
+            in.close();
+            data = sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return data;
+    }
+
+
+
+
 
     public static double getTemperature(String json){
         double temp = 0.0;

@@ -25,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         (findViewById(R.id.APItest)).setOnClickListener(v -> {
-            String currentresult =  GetMethod.getCurrentWeather("Pohang");
-            Log.w("current", currentresult);;
+            String JSONcurrent =  GetMethod.getCurrentWeather("Pohang");
+            Map<String, String> currentResult = GetMethod.extractCurrentFromJSON(JSONcurrent);
+            Log.w("current", currentResult.toString());
             String JSONForecast = GetMethod.getForecastWeather("Pohang");
             Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
             Log.w("forecast results", forecastResult.toString());

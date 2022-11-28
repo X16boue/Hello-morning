@@ -1,7 +1,5 @@
 package project.hellomorning;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,8 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GetMethod {
-    Map<String, String> forecast = new HashMap<String, String>();
-
 
     public static String getCurrentWeather(String city) {
         BufferedReader in;
@@ -117,11 +113,8 @@ public class GetMethod {
         try{
             JSONArray jsonArray = new JSONArray(json);
             JSONObject jsonResponse = jsonArray.getJSONObject(0);
-            Log.e("jsonArray", jsonArray.toString());
-            Log.e("json", jsonResponse.toString());
             double lat = jsonResponse.getDouble("lat");
             double lon = jsonResponse.getInt("lon");
-
             latLon[0] = String.valueOf(lat);
             latLon[1] = String.valueOf(lon);
         } catch (JSONException e) {
@@ -132,7 +125,7 @@ public class GetMethod {
 
 
     public static Map<String, String> extractForecastFromJSON(String json){
-        Map<String, String> forecast = new HashMap<String, String>();
+        Map<String, String> forecast = new HashMap<>();
         try{
             JSONObject jsonResponse = new JSONObject(json);
             JSONArray jsonArray = jsonResponse.getJSONArray("list");
@@ -162,53 +155,31 @@ public class GetMethod {
     }
 
 
-    public static double getTemperature(String json){
-        double temp = 0.0;
-        try {
+    public static Map<String, String> extractCurrentFromJSON(String json){
+        Map<String, String> current = new HashMap<>();
+        try{
             JSONObject jsonResponse = new JSONObject(json);
             JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
-            temp = jsonObjectMain.getDouble("temp") - 273.15;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return temp;
-    }
 
-    public static double getWindSpeed(String json){
-        double wind = 0.0;
-        try {
-            JSONObject jsonResponse = new JSONObject(json);
+            double temp = jsonObjectMain.getDouble("temp") - 273.15;
+            current.put("temperature", String.valueOf(temp));
+
             JSONObject jsonObjectWind = jsonResponse.getJSONObject("wind");
-            wind = jsonObjectWind.getDouble("speed");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return wind;
-    }
+            double wind = jsonObjectWind.getDouble("speed");
+            current.put("wind", String.valueOf(wind));
 
-    public static int getHumidity(String json){
-        int humid = 0;
-        try {
-            JSONObject jsonResponse = new JSONObject(json);
-            JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
-            humid = jsonObjectMain.getInt("humidity");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return humid;
-    }
-
-    public static String getDescription(String json){
-        String description = "";
-        try {
-            JSONObject jsonResponse = new JSONObject(json);
             JSONArray jsonArray = jsonResponse.getJSONArray("weather");
             JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
-            description = jsonObjectWeather.getString("main");
+            String description = jsonObjectWeather.getString("main");
+            current.put("description", description);
+
+            int humidity = jsonObjectMain.getInt("humidity");
+            current.put("humidity", String.valueOf(humidity));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return description;
+        return current;
     }
 
 }

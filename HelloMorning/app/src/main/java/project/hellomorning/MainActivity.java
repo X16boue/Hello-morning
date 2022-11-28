@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -23,8 +25,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         (findViewById(R.id.APItest)).setOnClickListener(v -> {
-            String result =  GetMethod.getCurrentWeather("Pohang");
-            Log.w("API results", result);
+            String currentresult =  GetMethod.getCurrentWeather("Pohang");
+            Log.w("current", currentresult);;
+            String JSONForecast = GetMethod.getForecastWeather("Pohang");
+            Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
+            Log.w("forecast results", forecastResult.toString());
         });
     }
 }

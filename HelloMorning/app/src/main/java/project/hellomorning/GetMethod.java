@@ -1,5 +1,7 @@
 package project.hellomorning;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,7 +115,10 @@ public class GetMethod {
     public static String[] latLonFromJSON(String json){
         String[] latLon = new String[2];
         try{
-            JSONObject jsonResponse = new JSONObject(json);
+            JSONArray jsonArray = new JSONArray(json);
+            JSONObject jsonResponse = jsonArray.getJSONObject(0);
+            Log.e("jsonArray", jsonArray.toString());
+            Log.e("json", jsonResponse.toString());
             double lat = jsonResponse.getDouble("lat");
             double lon = jsonResponse.getInt("lon");
 
@@ -146,7 +151,7 @@ public class GetMethod {
             String description = jsonObjectWeather.getString("main");
             forecast.put("description", description);
 
-            int humidity = jsonObject3hours.getInt("humidity");
+            int humidity = jsonObjectMain.getInt("humidity");
             forecast.put("humidity", String.valueOf(humidity));
 
 

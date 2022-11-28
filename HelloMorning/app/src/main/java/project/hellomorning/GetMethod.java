@@ -10,8 +10,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GetMethod {
+    Map<String, String> forecast = new HashMap<String, String>();
 
 
     public static String getCurrentWeather(String city) {
@@ -48,7 +51,7 @@ public class GetMethod {
         HttpURLConnection urlConnection = null;
 
         try {
-            String stringUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=35eabfbc88074474775d676e2f0fc2ef";
+            String stringUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&cnt=2&appid=35eabfbc88074474775d676e2f0fc2ef";
             URL url = new URL(stringUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
             in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -71,7 +74,35 @@ public class GetMethod {
     }
 
 
+    public static Map<String, String> extractForecastFromJSON(String json){
+        Map<String, String> forecast = new HashMap<String, String>();
+        try{
+            JSONObject jsonResponse = new JSONObject(json);
+            JSONArray jsonArray = jsonResponse.getJSONArray("list");
+            JSONObject jsonObject3hours = jsonArray.getJSONObject(1);
 
+            JSONObject jsonObjectMain = jsonObject3hours.getJSONObject("main");
+            double temp = jsonObjectMain.getDouble("temp") - 273.15;
+            forecast.put("temperature", String.valueOf(temp));
+
+            JSONObject jsonObjectWind = jsonObject3hours.getJSONObject("wind");
+            double wind = jsonObjectWind.getDouble("speed");
+            forecast.put("wind", String.valueOf(wind));
+
+            JSONArray jsonWeatherArray = jsonObject3hours.getJSONArray("weather");
+            JSONObject jsonObjectWeather = jsonWeatherArray.getJSONObject(0);
+            String description = jsonObjectWeather.getString("main");
+            forecast.put("description", description);
+
+            int humidity = jsonObject3hours.getInt("humidity");
+            forecast.put("humidity", String.valueOf(humidity));
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return forecast;
+    }
 
 
     public static double getTemperature(String json){

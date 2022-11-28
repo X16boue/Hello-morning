@@ -1,7 +1,5 @@
 package project.hellomorning;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +69,60 @@ public class GetMethod {
             }
         }
         return data;
+    }
+
+    public static String getForecastWeather(String cityname) {
+
+        String latLonJSONResponse = getLatLonFromCityName(cityname);
+        String[] latLon = latLonFromJSON(latLonJSONResponse);
+        String latitude = latLon[0];
+        String longitude = latLon[1];
+
+        return getForecastWeather(latitude, longitude);
+    }
+
+
+    public static String getLatLonFromCityName(String cityName) {
+        BufferedReader in;
+        String data = null;
+        HttpURLConnection urlConnection = null;
+
+        try {
+            String stringUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=35eabfbc88074474775d676e2f0fc2ef";
+            URL url = new URL(stringUrl);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String l;
+            String nl = System.getProperty("line.separator");
+            while ((l = in.readLine()) != null) {
+                sb.append(l).append(nl);
+            }
+            in.close();
+            data = sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return data;
+    }
+
+    public static String[] latLonFromJSON(String json){
+        String[] latLon = new String[2];
+        try{
+            JSONObject jsonResponse = new JSONObject(json);
+            double lat = jsonResponse.getDouble("lat");
+            double lon = jsonResponse.getInt("lon");
+
+            latLon[0] = String.valueOf(lat);
+            latLon[1] = String.valueOf(lon);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return latLon;
     }
 
 

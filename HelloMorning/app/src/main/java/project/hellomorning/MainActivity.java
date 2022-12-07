@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> materials = fetchMaterialFromFile(filename);
         String userName = materials.get(0);
         String workCityName = materials.get(1);
+        Log.w("city", workCityName);
 
         TextView helloUser = (findViewById(R.id.helloUser));
         helloUser.setText("Hello " + userName);
@@ -34,21 +35,13 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        List<String> recommendations = makeFetchingAndRecommendation(workCityName);
+        Log.w("recommendations", recommendations.toString());
+
 
         (findViewById(R.id.jumpToForm)).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, FormActivity.class);
             startActivity(intent);
-        });
-
-        (findViewById(R.id.APItest)).setOnClickListener(v -> {
-            String JSONcurrent =  GetMethod.getCurrentWeather(workCityName);
-            Map<String, String> currentResult = GetMethod.extractCurrentFromJSON(JSONcurrent);
-            Log.w("current", currentResult.toString());
-            String JSONForecast = GetMethod.getForecastWeather(workCityName);
-            Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
-            Log.w("forecast results", forecastResult.toString());
-            List<String> recommendations = recommendationDecision(currentResult, forecastResult);
-            Log.w("recommendations", recommendations.toString());
         });
     }
 
@@ -64,6 +57,16 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return output;
+    }
+
+    protected List<String> makeFetchingAndRecommendation(String workCityName){
+        String JSONcurrent = GetMethod.getCurrentWeather(workCityName);
+        Map<String, String> currentResult = GetMethod.extractCurrentFromJSON(JSONcurrent);
+        Log.w("current", currentResult.toString());
+        String JSONForecast = GetMethod.getForecastWeather(workCityName);
+        Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
+        Log.w("forecast results", forecastResult.toString());
+        return recommendationDecision(currentResult, forecastResult);
     }
 
     protected List<String> recommendationDecision(Map<String, String> weatherData, Map<String, String> weatherForecast){

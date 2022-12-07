@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
             String JSONForecast = GetMethod.getForecastWeather("Pohang");
             Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
             Log.w("forecast results", forecastResult.toString());
+            List<String> recommendations = recommendationDecision(currentResult, forecastResult);
+            Log.w("recommendations", recommendations.toString());
         });
     }
 
@@ -57,5 +59,26 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return output;
+    }
+
+    protected List<String> recommendationDecision(Map<String, String> weatherData, Map<String, String> weatherForecast){
+        List<String> recommendation = new ArrayList<>();
+        recommendation.add("mask");
+        if(Double.valueOf(weatherData.get("temperature")) > 28.0){
+            if(weatherData.get("description").equals("Clear")){
+                if(Double.valueOf(weatherData.get("wind")) < 2.0){
+                    if(Double.valueOf(weatherData.get("humidity")) < 70.0){
+                        recommendation.add("parasol");
+                        recommendation.add("umbrella");
+                        recommendation.add("sunglasses");
+                        recommendation.add("water botttle");
+                    }
+                    else{
+                        recommendation.add("stay indoor");
+                    }
+                }
+            }
+        }
+        return recommendation;
     }
 }

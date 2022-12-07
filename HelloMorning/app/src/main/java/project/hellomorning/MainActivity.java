@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
         List<String> materials = fetchMaterialFromFile(filename);
         String userName = materials.get(0);
         String workCityName = materials.get(1);
+
+        TextView helloUser = (findViewById(R.id.helloUser));
+        helloUser.setText("Hello " + userName);
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -36,10 +41,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         (findViewById(R.id.APItest)).setOnClickListener(v -> {
-            String JSONcurrent =  GetMethod.getCurrentWeather("Pohang");
+            String JSONcurrent =  GetMethod.getCurrentWeather(workCityName);
             Map<String, String> currentResult = GetMethod.extractCurrentFromJSON(JSONcurrent);
             Log.w("current", currentResult.toString());
-            String JSONForecast = GetMethod.getForecastWeather("Pohang");
+            String JSONForecast = GetMethod.getForecastWeather(workCityName);
             Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
             Log.w("forecast results", forecastResult.toString());
             List<String> recommendations = recommendationDecision(currentResult, forecastResult);

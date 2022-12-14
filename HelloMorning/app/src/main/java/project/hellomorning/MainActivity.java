@@ -25,17 +25,38 @@ public class MainActivity extends AppCompatActivity {
         String filename = "userdata";
 
         List<String> materials = fetchMaterialFromFile(filename);
-        String userName = materials.get(0);
-        String workCityName = materials.get(1);
-        Log.w("city", workCityName);
+        Log.w("materials", materials.toString());
 
+        String workCityName;
+        String userName;
+        if ((materials.get(0).equals("")) || (materials.get(0) == null)){
+            userName = "User";
+        } else {
+            userName = materials.get(0);
+        }
+        if ((materials.get(1).equals("")) || (materials.get(1) == null)){
+            workCityName = "Pohang";
+        } else {
+            workCityName = materials.get(1);
+        }
+        Log.w("city", workCityName);
+        List<String> userPossession = new ArrayList<>();
+        try {
+            materials.remove(0);
+            materials.remove(0);
+            userPossession = materials;
+            Log.w("user possession", userPossession.toString());
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.w("", "empty materials");
+        }
         TextView helloUser = (findViewById(R.id.helloUser));
         helloUser.setText("Hello " + userName);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        List<String> recommendations = makeFetchingAndRecommendation(workCityName);
+        List<String> recommendations = makeFetchingAndRecommendation(workCityName, userPossession);
         Log.w("recommendations", recommendations.toString());
 
 
@@ -59,14 +80,15 @@ public class MainActivity extends AppCompatActivity {
         return output;
     }
 
-    protected List<String> makeFetchingAndRecommendation(String workCityName){
+    protected List<String> makeFetchingAndRecommendation(String workCityName, List<String> userPossesion){
         String JSONcurrent = GetMethod.getCurrentWeather(workCityName);
         Map<String, String> currentResult = GetMethod.extractCurrentFromJSON(JSONcurrent);
         Log.w("current", currentResult.toString());
         String JSONForecast = GetMethod.getForecastWeather(workCityName);
         Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
         Log.w("forecast results", forecastResult.toString());
-        return recommendationDecision(currentResult, forecastResult);
+        List<String> recomendation = recommendationDecision(currentResult, forecastResult);
+        return trimRecommendation(recomendation, userPossesion);
     }
 
     protected List<String> recommendationDecision(Map<String, String> weatherData, Map<String, String> weatherForecast){
@@ -124,4 +146,13 @@ public class MainActivity extends AppCompatActivity {
             return recommendation;
     }
 
+    protected List<String> trimRecommendation(List<String> recommendation, List<String> userPossesion){
+        List<String> trimRecommendation = new ArrayList<>();
+        for(String reco : recommendation){
+            if(userPossesion.contains(reco)){
+                trimRecommendation.add(reco);
+            }
+        }
+        return trimRecommendation;
+    }
 }

@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     protected List<String> recommendationDecision(Map<String, String> weatherData, Map<String, String> weatherForecast){
         List<String> recommendation = new ArrayList<>();
         recommendation.add("mask");
-        if(Double.valueOf(weatherData.get("temperature")) > 28.0){
+        if((Double.valueOf(weatherData.get("temperature")) > 28.0) || (Double.valueOf(weatherForecast.get("temperature")) > 28.0)){
             if(weatherData.get("description").equals("Clear")){
                 recommendation.add("sunglasses");
                 recommendation.add("water botttle");
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             } else if(weatherData.get("description").equals("Cloudy")) {
                 recommendation.add("portable fan");
             }
-        } else if(Double.valueOf(weatherData.get("temperature")) > 12.0) {
+        } else if((Double.valueOf(weatherData.get("temperature")) > 12.0) || (Double.valueOf(weatherForecast.get("temperature")) > 12.0)) {
             if(weatherData.get("description").equals("Clear")) {
                 recommendation.add("sunglasses");
                 recommendation.add("cap");
@@ -137,11 +137,12 @@ public class MainActivity extends AppCompatActivity {
                     recommendation.add("raincoat");
                 }
             }
-            if(Double.valueOf(weatherData.get("temperature")) < 5.0) {
+            if((Double.valueOf(weatherData.get("temperature")) < 5.0) || (Double.valueOf(weatherForecast.get("temperature")) < 5.0)) {
                 recommendation.add("thermo mask");
             }
         }
             return recommendation;
+
     }
 
     protected List<String> trimRecommendation(List<String> recommendation, List<String> userPossesion){

@@ -74,19 +74,54 @@ public class MainActivity extends AppCompatActivity {
         recommendation.add("mask");
         if(Double.valueOf(weatherData.get("temperature")) > 28.0){
             if(weatherData.get("description").equals("Clear")){
+                recommendation.add("sunglasses");
+                recommendation.add("water botttle");
                 if(Double.valueOf(weatherData.get("wind")) < 2.0){
                     if(Double.valueOf(weatherData.get("humidity")) < 70.0){
                         recommendation.add("parasol");
                         recommendation.add("umbrella");
-                        recommendation.add("sunglasses");
-                        recommendation.add("water botttle");
                     }
-                    else{
-                        recommendation.add("stay indoor");
-                    }
+                } else if(Double.valueOf(weatherData.get("wind") )< 10.0){
+                    //srong wind
+                }
+            } else if(weatherData.get("description").equals("Rain")) {
+                if(Double.valueOf(weatherData.get("wind")) < 2.0) {
+                    recommendation.add("umbrella");
+                } else {
+                    recommendation.add("raincoat");
+                }
+            } else if(weatherData.get("description").equals("Cloudy")) {
+                recommendation.add("portable fan");
+            }
+        } else if(Double.valueOf(weatherData.get("temperature")) > 12.0) {
+            if(weatherData.get("description").equals("Clear")) {
+                recommendation.add("sunglasses");
+                recommendation.add("cap");
+            } else if(weatherData.get("description").equals("Rain")) {
+                if (Double.valueOf(weatherData.get("wind")) < 2.0) {
+                    recommendation.add("umbrella");
+                } else {
+                    recommendation.add("raincoat");
                 }
             }
+        } else {
+            if(weatherData.get("description").equals("Clear")) {
+                recommendation.add("hat");
+                recommendation.add("scarf");
+                recommendation.add("gloves");
+
+            } else if(weatherData.get("description").equals("Rain")) {
+                if (Double.valueOf(weatherData.get("wind")) < 2.0) {
+                    recommendation.add("umbrella");
+                } else {
+                    recommendation.add("raincoat");
+                }
+            }
+            if(Double.valueOf(weatherData.get("temperature")) < 5.0) {
+                recommendation.add("thermo mask");
+            }
         }
-        return recommendation;
+            return recommendation;
     }
+
 }

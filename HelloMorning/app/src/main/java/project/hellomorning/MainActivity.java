@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         String workCityName;
         String userName;
+        List<String> userPossession = new ArrayList<>();
+
         if ((materials.get(0).equals("")) || (materials.get(0) == null)){
             userName = "User";
         } else {
@@ -39,17 +41,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             workCityName = materials.get(1);
         }
-        Log.w("city", workCityName);
-        List<String> userPossession = new ArrayList<>();
-        try {
-            materials.remove(0);
-            materials.remove(0);
-            userPossession = materials;
-            Log.w("user possession", userPossession.toString());
-        } catch (Exception e){
-            e.printStackTrace();
-            Log.w("", "empty materials");
+        if ((materials.get(2).equals("")) || (materials.get(2) == null)){
+            userPossession = new ArrayList<>();
+        } else {
+            userPossession = materials.subList(2, materials.size()-1);
         }
+        Log.w("user possession", userPossession.toString());
+
         TextView helloUser = (findViewById(R.id.helloUser));
         helloUser.setText("Hello " + userName);
 

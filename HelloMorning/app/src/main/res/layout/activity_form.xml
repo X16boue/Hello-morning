@@ -7,33 +7,74 @@
     android:background="#F8EFCD"
     tools:context=".FormActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/helloUser"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:shadowColor="#C39F0E"
-                android:shadowDx="0.0"
-                android:shadowDy="0.0"
-                android:shadowRadius="2.0"
-                android:text="Hello Minjoo!"
-                android:textAlignment="center"
-                android:textColor="#EED056"
-                android:textSize="25sp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="16dp" />
-        </LinearLayout>
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/helloUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:shadowColor="#C39F0E"
+                    android:shadowDx="0.0"
+                    android:shadowDy="0.0"
+                    android:shadowRadius="2.0"
+                    android:text="Hello Minjoo!"
+                    android:textAlignment="center"
+                    android:textColor="#EED056"
+                    android:textSize="25sp"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="16dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_view_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Please tell us your name: "
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="52dp" />
+
+                <EditText
+                    android:id="@+id/name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:orientation="horizontal" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:orientation="horizontal"
+                    android:text="Please tell us the name of city of your workplace: "
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="155dp" />
+
+                <EditText
+                    android:id="@+id/work_city_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:orientation="horizontal" />
+            </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,7 +85,8 @@
             app:layout_constraintRight_toRightOf="parent">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/checkboxSet"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
@@ -59,78 +101,82 @@
                     android:text="umbrella" />
 
                 <CheckBox
-                    android:id="@+id/bike"
+                    android:id="@+id/raincoat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="bike" />
+                    android:text="raincoat" />
 
                 <CheckBox
-                    android:id="@+id/scooter"
+                    android:id="@+id/sunglasses"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="scooter" />
+                    android:text="sunglasses" />
 
                 <CheckBox
-                    android:id="@+id/car"
+                    android:id="@+id/parasol"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="car" />
+                    android:text="parasol" />
 
                 <CheckBox
-                    android:id="@+id/addOption"
+                    android:id="@+id/waterbottle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Add your own transport" />
+                    android:text="water bottle" />
+
+                <CheckBox
+                    android:id="@+id/cap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="cap" />
+
+                <CheckBox
+                    android:id="@+id/hat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="hat" />
+
+                <CheckBox
+                    android:id="@+id/scarf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="scarf" />
+
+                <CheckBox
+                    android:id="@+id/gloves"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="gloves" />
+
+                <CheckBox
+                    android:id="@+id/facemask"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="face mask" />
+
             </LinearLayout>
 
-            <Button
-                android:id="@+id/jumpToHome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="HomePage" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/submitForm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Submit" />
+                <Button
+                    android:id="@+id/jumpToHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HomePage" />
+
+                <Button
+                    android:id="@+id/submitForm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submit" />
+            </LinearLayout>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/text_view_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Please tell us your name: "
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="52dp" />
-
-            <EditText
-                android:id="@+id/name_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:orientation="horizontal" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:orientation="horizontal"
-                android:text="Please tell us the name of city of your workplace: "
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="155dp"/>
-            <EditText
-                android:id="@+id/work_city_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:orientation="horizontal" />
-        </LinearLayout>
     </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

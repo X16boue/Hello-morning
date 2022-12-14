@@ -41,11 +41,17 @@ public class MainActivity extends AppCompatActivity {
         } else {
             workCityName = materials.get(1);
         }
-        if ((materials.get(2).equals("")) || (materials.get(2) == null)){
-            userPossession = new ArrayList<>();
-        } else {
-            userPossession = materials.subList(2, materials.size()-1);
+        if (materials.size() > 2){
+            if ((materials.get(2).equals("")) || (materials.get(2) == null)){
+                userPossession = new ArrayList<>();
+            } else {
+                userPossession = materials.subList(2, materials.size()-1);
+            }
+        } else{
+            Toast.makeText(getApplicationContext(),"No equipment please fill the form", Toast.LENGTH_SHORT).show();
+
         }
+
         Log.w("user possession", userPossession.toString());
 
         TextView helloUser = (findViewById(R.id.helloUser));

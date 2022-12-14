@@ -10,9 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -26,11 +27,6 @@ public class FormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_form);
         List<String> checked = new ArrayList<>();
 
-
-        CheckBox checkUmbrella = findViewById(R.id.umbrella);
-        CheckBox checkBike = findViewById(R.id.bike);
-        CheckBox checkScooter = findViewById(R.id.scooter);
-        CheckBox checkCar = findViewById(R.id.car);
         Button submitButton = findViewById(R.id.submitForm);
 
         EditText nameInput = findViewById(R.id.name_input);
@@ -38,11 +34,17 @@ public class FormActivity extends AppCompatActivity {
 
 
         submitButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 String userName = "";
                 String workCityName= "";
+                List<CheckBox> checkBoxes = getAllCheckBoxes(findViewById(R.id.checkboxSet));
+                Log.w("checkboxes", checkBoxes.toString());
+                for(CheckBox checkBox : checkBoxes){
+                    if(checkBox.isChecked()){
+                        checked.add((String) checkBox.getText());
+                    }
+                }
 
                 if(nameInput.length() > 0 || !(nameInput.equals(""))){
                     userName = String.valueOf(nameInput.getText());
@@ -52,19 +54,6 @@ public class FormActivity extends AppCompatActivity {
                 }
                 checked.add(0, userName);
                 checked.add(1, workCityName);
-
-                if(checkUmbrella.isChecked()){
-                    checked.add((String) checkUmbrella.getText());
-                }
-                if(checkBike.isChecked()){
-                    checked.add((String) checkBike.getText());
-                }
-                if(checkScooter.isChecked()){
-                    checked.add((String) checkScooter.getText());
-                }
-                if(checkCar.isChecked()){
-                    checked.add((String) checkCar.getText());
-                }
 
                 if (!(checked.isEmpty())){
                     saveListToFile(checked);
@@ -83,6 +72,21 @@ public class FormActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public ArrayList<CheckBox> getAllCheckBoxes(View view) {
+
+        ArrayList<CheckBox> returnViews = new ArrayList<>();
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.checkboxSet);
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+            if (child instanceof CheckBox) {
+                returnViews.add((CheckBox) child);
+            }
+        }
+
+        return returnViews;
     }
 
     protected void saveListToFile(List<String> checked)  {

@@ -95,6 +95,12 @@
                     android:text="Please indicate whether you possess these things:"/>
 
                 <CheckBox
+                    android:id="@+id/mask"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="mask" />
+
+                <CheckBox
                     android:id="@+id/umbrella"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -149,10 +155,10 @@
                     android:text="gloves" />
 
                 <CheckBox
-                    android:id="@+id/facemask"
+                    android:id="@+id/thermomask"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="face mask" />
+                    android:text="thermo mask" />
 
             </LinearLayout>
 

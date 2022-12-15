@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             if ((materials.get(2).equals("")) || (materials.get(2) == null)){
                 userPossession = new ArrayList<>();
             } else {
-                userPossession = materials.subList(2, materials.size()-1);
+                userPossession = materials.subList(2, materials.size());
             }
         } else{
             Toast.makeText(getApplicationContext(),"No equipment please fill the form", Toast.LENGTH_SHORT).show();
@@ -61,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         List<String> recommendations = makeFetchingAndRecommendation(workCityName, userPossession);
-        Log.w("recommendations", recommendations.toString());
-
+        buildToTakeList(recommendations);
 
         (findViewById(R.id.jumpToForm)).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, FormActivity.class);
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
         Log.w("forecast results", forecastResult.toString());
         List<String> recomendation = recommendationDecision(currentResult, forecastResult);
+        Log.w("recommmendations before trim", String.valueOf(recomendation));
         return trimRecommendation(recomendation, userPossesion);
     }
 
@@ -154,10 +157,31 @@ public class MainActivity extends AppCompatActivity {
     protected List<String> trimRecommendation(List<String> recommendation, List<String> userPossesion){
         List<String> trimRecommendation = new ArrayList<>();
         for(String reco : recommendation){
+            Log.w("reco", reco);
             if(userPossesion.contains(reco)){
                 trimRecommendation.add(reco);
-            }
+                Log.w(reco, "conservé");
+            } else  Log.w(reco, "non");
+
         }
         return trimRecommendation;
     }
+
+    protected void buildToTakeList(List<String> recommendations){
+        ArrayList<View> childrenToAdd = new ArrayList<>();
+        LinearLayout layout = (LinearLayout) findViewById(R.id.checklist);
+
+        for(String item : recommendations){
+            CheckBox cb = new CheckBox(getApplicationContext());
+            cb.setText(item);
+            childrenToAdd.add(cb);
+            layout.addView(cb);
+
+        }
+        Log.w("recommendations", recommendations.toString());
+        Log.w("children", String.valueOf(childrenToAdd.size()));
+        //layout.addChildrenForAccessibility(childrenToAdd);
+
+    }
+
 }

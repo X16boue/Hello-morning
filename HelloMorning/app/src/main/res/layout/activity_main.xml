@@ -31,7 +31,7 @@
                 android:textColor="#EED056"
                 android:textSize="25sp" />
 
-            <RadioGroup
+            <LinearLayout
                 android:id="@+id/checklist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,26 +44,7 @@
                     android:background="#F9D35D"
                     android:text="Did you take?" />
 
-                <CheckBox
-                    android:id="@+id/check_Mask"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mask" />
-
-                <CheckBox
-                    android:id="@+id/check_Umbrella"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Umbrella" />
-
-                <CheckBox
-                    android:id="@+id/check_Custom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New-to-do"
-                    android:textColor="#A49F89" />
-
-            </RadioGroup>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

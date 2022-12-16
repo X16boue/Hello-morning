@@ -25,7 +25,7 @@ public class FormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
-        List<String> checked = new ArrayList<>();
+        List<String> toSave = new ArrayList<>();
 
         Button submitButton = findViewById(R.id.submitForm);
 
@@ -33,18 +33,14 @@ public class FormActivity extends AppCompatActivity {
         EditText workCityInput = findViewById(R.id.work_city_input);
 
 
+
+
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userName = "";
-                String workCityName= "";
-                List<CheckBox> checkBoxes = getAllCheckBoxes(findViewById(R.id.checkboxSet));
-                Log.w("checkboxes", checkBoxes.toString());
-                for(CheckBox checkBox : checkBoxes){
-                    if(checkBox.isChecked()){
-                        checked.add((String) checkBox.getText());
-                    }
-                }
+                String userName = "Unknown User";
+                String workCityName= "Pohang";
 
                 if(nameInput.length() > 0 || !(nameInput.equals(""))){
                     userName = String.valueOf(nameInput.getText());
@@ -52,11 +48,33 @@ public class FormActivity extends AppCompatActivity {
                 if(workCityInput.length() > 0 || !(workCityInput.equals(""))){
                     workCityName = String.valueOf(workCityInput.getText());
                 }
-                checked.add(0, userName);
-                checked.add(1, workCityName);
+                toSave.add(userName);
+                toSave.add(workCityName);
 
-                if (!(checked.isEmpty())){
-                    saveListToFile(checked);
+                List<CheckBox> equipmentBoxes = getAllCheckBoxes(findViewById(R.id.equipment));
+                Log.w("checkboxes", equipmentBoxes.toString());
+                for(CheckBox checkBox : equipmentBoxes){
+                    if(checkBox.isChecked()){
+                        toSave.add((String) checkBox.getText());
+                    }
+                }
+
+                Log.w("toSave beginning", toSave.toString());
+
+                toSave.add(2, String.valueOf(toSave.size()+1));
+                Log.w("toSave with offset", toSave.toString());
+
+                List<CheckBox> transportationBoxes = getAllCheckBoxes(findViewById(R.id.transportation));
+                Log.w("checkboxes", transportationBoxes.toString());
+                for(CheckBox checkBox : transportationBoxes){
+                    if(checkBox.isChecked()){
+                        toSave.add((String) checkBox.getText());
+                    }
+                }
+                Log.w("toSave end", toSave.toString());
+
+                if (!(toSave.isEmpty())){
+                    saveListToFile(toSave);
                 }
             }
         });
@@ -78,7 +96,7 @@ public class FormActivity extends AppCompatActivity {
 
         ArrayList<CheckBox> returnViews = new ArrayList<>();
 
-        LinearLayout layout = (LinearLayout) findViewById(R.id.checkboxSet);
+        LinearLayout layout = (LinearLayout) view;
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof CheckBox) {

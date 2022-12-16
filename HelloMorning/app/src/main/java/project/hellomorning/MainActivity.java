@@ -30,32 +30,42 @@ public class MainActivity extends AppCompatActivity {
         List<String> materials = fetchMaterialFromFile(filename);
         Log.w("materials", materials.toString());
 
-        String workCityName;
-        String userName;
-        List<String> userPossession = new ArrayList<>();
+        String userName = "Unknown user";
+        String workCityName = "Pohang";
+        int equipmentOffset=0;
+        //try catch statement because on first opening the file will have no data
+        try{
+            if((materials.get(0) != null) && (!(materials.get(0).equals("")))){
+                userName = materials.get(0);
+            }
+            if((materials.get(1) != null) && (!(materials.get(1).equals("")))){
+                workCityName = materials.get(1);
+            }
+            equipmentOffset = Integer.parseInt(materials.get(2));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
-        if ((materials.get(0).equals("")) || (materials.get(0) == null)){
-            userName = "User";
-        } else {
-            userName = materials.get(0);
-        }
-        if ((materials.get(1).equals("")) || (materials.get(1) == null)){
-            workCityName = "Pohang";
-        } else {
-            workCityName = materials.get(1);
-        }
-        if (materials.size() > 2){
-            if ((materials.get(2).equals("")) || (materials.get(2) == null)){
-                userPossession = new ArrayList<>();
+        List<String> userEquipment = new ArrayList<>();
+        List<String> userTransportation = new ArrayList<>();
+
+        if (materials.size() > 3){
+            if ((materials.get(3).equals("")) || (materials.get(3) == null)){
+                userEquipment = new ArrayList<>();
             } else {
-                userPossession = materials.subList(2, materials.size());
+                userEquipment = materials.subList(3, equipmentOffset);
             }
         } else{
             Toast.makeText(getApplicationContext(),"No equipment please fill the form", Toast.LENGTH_SHORT).show();
-
         }
 
-        Log.w("user possession", userPossession.toString());
+        if(equipmentOffset > 0){
+            userTransportation = materials.subList(equipmentOffset, materials.size());
+        }
+
+        Log.w("citname", workCityName);
+        Log.w("userEquipment", userEquipment.toString());
+        Log.w("userTransportation", userTransportation.toString());
 
         TextView helloUser = (findViewById(R.id.helloUser));
         helloUser.setText("Hello " + userName);
@@ -63,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        List<String> recommendations = makeFetchingAndRecommendation(workCityName, userPossession);
+        List<String> recommendations = makeFetchingAndRecommendation(workCityName, userEquipment);
         buildToTakeList(recommendations);
 
         (findViewById(R.id.jumpToForm)).setOnClickListener(v -> {

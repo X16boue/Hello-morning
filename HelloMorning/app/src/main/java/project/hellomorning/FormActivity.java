@@ -64,6 +64,7 @@ public class FormActivity extends AppCompatActivity {
                 toSave.add(2, String.valueOf(toSave.size()+1));
                 Log.w("toSave with offset", toSave.toString());
 
+                toSave.add("walk");
                 List<CheckBox> transportationBoxes = getAllCheckBoxes(findViewById(R.id.transportation));
                 Log.w("checkboxes", transportationBoxes.toString());
                 for(CheckBox checkBox : transportationBoxes){

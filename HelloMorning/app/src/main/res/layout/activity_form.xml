@@ -184,6 +184,17 @@
                     android:layout_height="wrap_content"
                     android:text="bike" />
 
+                <CheckBox
+                    android:id="@+id/scooter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="scooter" />
+
+                <CheckBox
+                    android:id="@+id/publicTranportation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="public transportation" />
 
 
             </LinearLayout>

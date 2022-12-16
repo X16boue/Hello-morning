@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -73,8 +74,13 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        List<String> recommendations = makeFetchingAndRecommendation(workCityName, userEquipment);
-        buildToTakeList(recommendations);
+        List<String>[] recommendations = makeFetchingAndRecommendation(workCityName, userEquipment, userTransportation);
+        List<String> recommmendedEquipment = recommendations[0];
+        List<String> recommmendedTransportation = recommendations[1];
+
+        buildEquipmentList(recommmendedEquipment);
+        buildTransportationList(recommmendedTransportation);
+
 
         (findViewById(R.id.jumpToForm)).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, FormActivity.class);
@@ -96,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         return output;
     }
 
-    protected List<String> makeFetchingAndRecommendation(String workCityName, List<String> userPossesion){
+    protected List<String>[] makeFetchingAndRecommendation(String workCityName, List<String> userEquipment, List<String> userTransportation){
         String JSONcurrent = GetMethod.getCurrentWeather(workCityName);
         Map<String, String> currentResult = GetMethod.extractCurrentFromJSON(JSONcurrent);
         Log.w("current", currentResult.toString());
@@ -105,43 +111,63 @@ public class MainActivity extends AppCompatActivity {
         Log.w("forecast results", forecastResult.toString());
         List<String> recomendation = recommendationDecision(currentResult, forecastResult);
         Log.w("recommmendations before trim", String.valueOf(recomendation));
-        return trimRecommendation(recomendation, userPossesion);
+
+        List<String> trimmedEquipment = trimRecommendation(recomendation, userEquipment);
+        List<String> trimmedTransportation = trimRecommendation(recomendation, userTransportation);
+        //trick to return two variables
+        List<String>[] output = new List[2];
+        output[0] = trimmedEquipment;
+        output[1] = trimmedTransportation;
+        return output ;
     }
 
     protected List<String> recommendationDecision(Map<String, String> weatherData, Map<String, String> weatherForecast){
         List<String> recommendation = new ArrayList<>();
         recommendation.add("mask");
+
+        //general case for rain
+        if(weatherData.get("description").equals("Rain")) {
+            recommendation.add("car");
+            recommendation.add("public transportation");
+            if (Double.valueOf(weatherData.get("wind")) < 2.0) {
+                recommendation.add("umbrella");
+            } else {
+                recommendation.add("raincoat");
+            }
+        }
+
+
+
+
         if((Double.valueOf(weatherData.get("temperature")) > 28.0) || (Double.valueOf(weatherForecast.get("temperature")) > 28.0)){
             if(weatherData.get("description").equals("Clear")){
                 recommendation.add("sunglasses");
                 recommendation.add("water botttle");
                 if(Double.valueOf(weatherData.get("wind")) < 2.0){
+                    recommendation.add("bike");
+                    recommendation.add("scooter");
+                    recommendation.add("walk");
                     if(Double.valueOf(weatherData.get("humidity")) < 70.0){
                         recommendation.add("parasol");
-                        recommendation.add("umbrella");
                     }
                 } else if(Double.valueOf(weatherData.get("wind") )< 10.0){
                     //srong wind
-                }
-            } else if(weatherData.get("description").equals("Rain")) {
-                if(Double.valueOf(weatherData.get("wind")) < 2.0) {
-                    recommendation.add("umbrella");
-                } else {
-                    recommendation.add("raincoat");
+                    recommendation.add("car");
+                    recommendation.add("public transportation");
                 }
             } else if(weatherData.get("description").equals("Cloudy")) {
                 recommendation.add("portable fan");
+                recommendation.add("bike");
+                recommendation.add("scooter");
+                recommendation.add("walk");
             }
         } else if((Double.valueOf(weatherData.get("temperature")) > 12.0) || (Double.valueOf(weatherForecast.get("temperature")) > 12.0)) {
             if(weatherData.get("description").equals("Clear")) {
                 recommendation.add("sunglasses");
                 recommendation.add("cap");
-            } else if(weatherData.get("description").equals("Rain")) {
-                if (Double.valueOf(weatherData.get("wind")) < 2.0) {
-                    recommendation.add("umbrella");
-                } else {
-                    recommendation.add("raincoat");
-                }
+                recommendation.add("bike");
+                recommendation.add("scooter");
+                recommendation.add("walk");
             }
         } else {
             if(weatherData.get("description").equals("Clear")) {
@@ -149,15 +175,15 @@ public class MainActivity extends AppCompatActivity {
                 recommendation.add("scarf");
                 recommendation.add("gloves");
 
-            } else if(weatherData.get("description").equals("Rain")) {
-                if (Double.valueOf(weatherData.get("wind")) < 2.0) {
-                    recommendation.add("umbrella");
-                } else {
-                    recommendation.add("raincoat");
-                }
             }
             if((Double.valueOf(weatherData.get("temperature")) < 5.0) || (Double.valueOf(weatherForecast.get("temperature")) < 5.0)) {
                 recommendation.add("thermo mask");
+                recommendation.add("car");
+                recommendation.add("public transportation");
+            } else{
+                recommendation.add("bike");
+                recommendation.add("scooter");
+                recommendation.add("walk");
             }
         }
             return recommendation;
@@ -167,31 +193,36 @@ public class MainActivity extends AppCompatActivity {
     protected List<String> trimRecommendation(List<String> recommendation, List<String> userPossesion){
         List<String> trimRecommendation = new ArrayList<>();
         for(String reco : recommendation){
-            Log.w("reco", reco);
             if(userPossesion.contains(reco)){
                 trimRecommendation.add(reco);
-                Log.w(reco, "conservé");
-            } else  Log.w(reco, "non");
+            }
 
         }
         return trimRecommendation;
     }
 
-    protected void buildToTakeList(List<String> recommendations){
-        ArrayList<View> childrenToAdd = new ArrayList<>();
+    protected void buildEquipmentList(List<String> equipment){
         LinearLayout layout = (LinearLayout) findViewById(R.id.checklist);
 
-        for(String item : recommendations){
+        for(String item : equipment){
             CheckBox cb = new CheckBox(getApplicationContext());
             cb.setText(item);
-            childrenToAdd.add(cb);
             layout.addView(cb);
-
         }
-        Log.w("recommendations", recommendations.toString());
-        Log.w("children", String.valueOf(childrenToAdd.size()));
-        //layout.addChildrenForAccessibility(childrenToAdd);
+    }
+
+    protected void buildTransportationList(List<String> tranportation){
+        LinearLayout layout = (LinearLayout) findViewById(R.id.tranportationOptions);
+        StringBuilder toDisplay = new StringBuilder();
+        for(String item : tranportation){
+            toDisplay.append(item);
+            toDisplay.append("\n");
+        }
+        TextView viewToDisplay = new TextView(getApplicationContext());
+        viewToDisplay.setText(toDisplay);
+        layout.addView(viewToDisplay);
 
     }
+
 
 }

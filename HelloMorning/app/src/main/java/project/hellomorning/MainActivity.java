@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
-import android.util.Pair;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -26,14 +25,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        List<String> userEquipment = new ArrayList<>();
+        List<String> userTransportation = new ArrayList<>();
+        //user data extraction
         String filename = "userdata";
+        String userName = "Unknown user";
+        String workCityName = "Pohang";
+        int equipmentOffset=0;
 
         List<String> materials = fetchMaterialFromFile(filename);
         Log.w("materials", materials.toString());
 
-        String userName = "Unknown user";
-        String workCityName = "Pohang";
-        int equipmentOffset=0;
         //try catch statement because on first opening the file will have no data
         try{
             if((materials.get(0) != null) && (!(materials.get(0).equals("")))){
@@ -46,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
-        List<String> userEquipment = new ArrayList<>();
-        List<String> userTransportation = new ArrayList<>();
 
         if (materials.size() > 3){
             if ((materials.get(3).equals("")) || (materials.get(3) == null)){
@@ -74,10 +73,23 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        List<String>[] recommendations = makeFetchingAndRecommendation(workCityName, userEquipment, userTransportation);
+
+        //weather fetching
+        String JSONcurrent = GetMethod.getCurrentWeather(workCityName);
+        Map<String, String> currentResult = GetMethod.extractCurrentFromJSON(JSONcurrent);
+        Log.w("current", currentResult.toString());
+        String JSONForecast = GetMethod.getForecastWeather(workCityName);
+        Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
+        Log.w("forecast results", forecastResult.toString());
+        displayWeatherInfo(currentResult, forecastResult, workCityName);
+
+
+        //recommendation making
+        List<String>[] recommendations = makeFetchingAndRecommendation(workCityName, userEquipment, userTransportation, currentResult, forecastResult);
         List<String> recommmendedEquipment = recommendations[0];
         List<String> recommmendedTransportation = recommendations[1];
 
+        //display of recommendation
         buildEquipmentList(recommmendedEquipment);
         buildTransportationList(recommmendedTransportation);
 
@@ -102,13 +114,8 @@ public class MainActivity extends AppCompatActivity {
         return output;
     }
 
-    protected List<String>[] makeFetchingAndRecommendation(String workCityName, List<String> userEquipment, List<String> userTransportation){
-        String JSONcurrent = GetMethod.getCurrentWeather(workCityName);
-        Map<String, String> currentResult = GetMethod.extractCurrentFromJSON(JSONcurrent);
-        Log.w("current", currentResult.toString());
-        String JSONForecast = GetMethod.getForecastWeather(workCityName);
-        Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
-        Log.w("forecast results", forecastResult.toString());
+    protected List<String>[] makeFetchingAndRecommendation(String workCityName, List<String> userEquipment, List<String> userTransportation, Map<String, String> currentResult, Map<String, String> forecastResult){
+
         List<String> recomendation = recommendationDecision(currentResult, forecastResult);
         Log.w("recommmendations before trim", String.valueOf(recomendation));
 
@@ -221,7 +228,19 @@ public class MainActivity extends AppCompatActivity {
         TextView viewToDisplay = new TextView(getApplicationContext());
         viewToDisplay.setText(toDisplay);
         layout.addView(viewToDisplay);
+    }
 
+    protected void displayWeatherInfo(Map<String, String> currentResult, Map<String, String> forecastresult, String workCityName){
+        TextView presentationView = findViewById(R.id.weatherAnnoucement);
+        TextView descriptionView = findViewById(R.id.weatherDescription);
+        TextView temperatureView = findViewById(R.id.weatherTemperature);
+        TextView windView = findViewById(R.id.weatherWind);
+        TextView humidityView = findViewById(R.id.weatherHumidity);
+        presentationView.setText("Here is the weather for today in " + workCityName);
+        descriptionView.setText(String.format("Description : %s then %s", currentResult.get("description"), forecastresult.get("description")));
+        temperatureView.setText(String.format("Temperature : %,.1f °C then %,.1f °C", Double.parseDouble(currentResult.get("temperature")), Double.parseDouble(forecastresult.get("temperature"))));
+        windView.setText(String.format("Wind : %s m/s then %s m/s", currentResult.get("wind"), forecastresult.get("wind")));
+        humidityView.setText(String.format("Humidity : %s %% then %s %%", currentResult.get("humidity"), forecastresult.get("humidity")));
     }
 
 

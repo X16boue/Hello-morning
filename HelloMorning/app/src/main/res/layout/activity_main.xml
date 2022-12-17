@@ -94,6 +94,12 @@
                     android:background="#F9D35D"
                     android:text="Best transport option" />
 
+                <TextView
+                    android:id="@+id/ecologyDisclaimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reminder, by choosing public transportation, bike or walk rather than personal car or scooter you are contributing to the preservation of the planet." />
+
             </LinearLayout>
 
             <Button

@@ -15,53 +15,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    List<String> userEquipment = new ArrayList<>();
+    List<String> userTransportation = new ArrayList<>();
+    String userName = "";
+    String workCityName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List<String> userEquipment = new ArrayList<>();
-        List<String> userTransportation = new ArrayList<>();
-        //user data extraction
+
+
         String filename = "userdata";
-        String userName = "Unknown user";
-        String workCityName = "Pohang";
-        int equipmentOffset=0;
-
-        List<String> materials = fetchMaterialFromFile(filename);
-        Log.w("materials", materials.toString());
-
-        //try catch statement because on first opening the file will have no data
-        try{
-            if((materials.get(0) != null) && (!(materials.get(0).equals("")))){
-                userName = materials.get(0);
-            }
-            if((materials.get(1) != null) && (!(materials.get(1).equals("")))){
-                workCityName = materials.get(1);
-            }
-            equipmentOffset = Integer.parseInt(materials.get(2));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        if (materials.size() > 3){
-            if ((materials.get(3).equals("")) || (materials.get(3) == null)){
-                userEquipment = new ArrayList<>();
-            } else {
-                userEquipment = materials.subList(3, equipmentOffset);
-            }
-        } else{
-            Toast.makeText(getApplicationContext(),"No equipment please fill the form", Toast.LENGTH_SHORT).show();
-        }
-
-        if(equipmentOffset > 0){
-            userTransportation = materials.subList(equipmentOffset, materials.size());
-        }
+        processFile(filename);
 
         Log.w("citname", workCityName);
         Log.w("userEquipment", userEquipment.toString());
@@ -77,15 +48,16 @@ public class MainActivity extends AppCompatActivity {
         //weather fetching
         String JSONcurrent = GetMethod.getCurrentWeather(workCityName);
         Map<String, String> currentResult = GetMethod.extractCurrentFromJSON(JSONcurrent);
-        Log.w("current", currentResult.toString());
         String JSONForecast = GetMethod.getForecastWeather(workCityName);
         Map<String, String> forecastResult = GetMethod.extractForecastFromJSON(JSONForecast);
+
+        Log.w("current", currentResult.toString());
         Log.w("forecast results", forecastResult.toString());
         displayWeatherInfo(currentResult, forecastResult, workCityName);
 
 
         //recommendation making
-        List<String>[] recommendations = makeFetchingAndRecommendation(workCityName, userEquipment, userTransportation, currentResult, forecastResult);
+        List<String>[] recommendations = makeFetchingAndRecommendation(currentResult, forecastResult);
         List<String> recommmendedEquipment = recommendations[0];
         List<String> recommmendedTransportation = recommendations[1];
 
@@ -114,7 +86,55 @@ public class MainActivity extends AppCompatActivity {
         return output;
     }
 
-    protected List<String>[] makeFetchingAndRecommendation(String workCityName, List<String> userEquipment, List<String> userTransportation, Map<String, String> currentResult, Map<String, String> forecastResult){
+    protected void processFile(String filename){
+        List<String> fileMaterials = fetchMaterialFromFile(filename);
+        Log.w("materials", fileMaterials.toString());
+        int offset = parseNameCityNameOffsetFromFIle(fileMaterials);
+        parseEquipmentTransportFromFile(fileMaterials, offset);
+    }
+
+    protected int parseNameCityNameOffsetFromFIle(List<String> fileMaterials){
+        userName = "Unknown user";
+        workCityName = "Pohang";
+        int equipmentOffset=0;
+        String[] output = new String[3];
+
+        //try catch statement because on first opening the file will have no data
+        try{
+            if((fileMaterials.get(0) != null) && (!(fileMaterials.get(0).equals("")))){
+                userName = fileMaterials.get(0);
+            }
+            if((fileMaterials.get(1) != null) && (!(fileMaterials.get(1).equals("")))){
+                workCityName = fileMaterials.get(1);
+            }
+            equipmentOffset = Integer.parseInt(fileMaterials.get(2));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return equipmentOffset;
+    }
+
+    protected void parseEquipmentTransportFromFile(List<String> fileMaterials, int equipmentOffset){
+        userEquipment = new ArrayList<>();
+        userTransportation = new ArrayList<>();
+
+        if (fileMaterials.size() > 3){
+            if ((fileMaterials.get(3).equals("")) || (fileMaterials.get(3) == null)){
+                userEquipment = new ArrayList<>();
+            } else {
+                userEquipment = fileMaterials.subList(3, equipmentOffset);
+            }
+        } else{
+            Toast.makeText(getApplicationContext(),"No equipment please fill the form", Toast.LENGTH_SHORT).show();
+        }
+
+        if(equipmentOffset > 0){
+            userTransportation = fileMaterials.subList(equipmentOffset, fileMaterials.size());
+        }
+    }
+
+    protected List<String>[] makeFetchingAndRecommendation(Map<String, String> currentResult, Map<String, String> forecastResult){
 
         List<String> recomendation = recommendationDecision(currentResult, forecastResult);
         Log.w("recommmendations before trim", String.valueOf(recomendation));
